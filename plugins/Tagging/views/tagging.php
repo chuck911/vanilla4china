@@ -10,7 +10,7 @@
    <?php
       echo $this->Form->Errors();
 
-      echo '<p>', T('Search for a tag.', 'Search for all or part of a tag.'), '</p>';
+      echo '<p>', T('搜索一个标签.', 'Search for all or part of a tag.'), '</p>';
 
       echo $this->Form->TextBox('Search');
       echo ' '.$this->Form->Button(T('Go'));
@@ -19,14 +19,14 @@
    ?>
 </div>
 <div class="Info">
-   <?php echo T('Click a tag name to edit. Click x to remove.'); ?>
+   <?php echo T('选择要修改的标签名. 删除请选择X.'); ?>
 </div>
 <div class="Tags">
    <?php
       $Session = Gdn::Session();
       $TagCount = $this->Data('RecordCount');
       if ($TagCount == 0) {
-         echo T("There are no tags in the system yet.");
+         echo T("系统中还没有任何标签。系统中还没有标签.");
       } else {
          $Tags = $this->Data('Tags');
          foreach ($Tags as $Tag) {
