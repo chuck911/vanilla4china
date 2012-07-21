@@ -115,14 +115,14 @@ $Definition['By uploading a file you certify that you have the right to distribu
 $Definition['Cancel'] = '取消';
 $Definition['Capture locale pack changes.'] = 'Capture the changes between one of your locale packs and the Locale Developer. It will be put in the <code>changes.php</code> file.';
 $Definition['Categories'] = '分类';
-$Definition['Categories are used to help organize discussions. '] = 'Categories are used to help organize discussions. ';
+$Definition['Categories are used to help organize discussions. '] = '分类可以帮助你归类话题讨论 ';
 $Definition['Category'] = '分类';
 $Definition['Category Url:'] = '分类 Url:';
 $Definition['Change My Password'] = '修改我的密码';
 $Definition['Change My Picture'] = '修改我的头像';
 $Definition['Change Password'] = '修改密码';
 $Definition['Change Picture'] = '更换图片';
-$Definition['Change the way that new users register with the site.'] = 'Change the way that new users register with the site.';
+$Definition['Change the way that new users register with the site.'] = '改变新用户的注册方式.';
 $Definition['Check all permissions that apply for each role'] = 'Check all permissions that apply for each role';
 $Definition['Check all roles that apply to this user:'] = 'Check all roles that apply to this user:';
 $Definition['Choose a locale pack'] = '选择一个本地化包';
@@ -235,7 +235,7 @@ $Definition['EmailStoryNotification'] = '%1$s
 	%2$s
 
 	祝你开心每一天!';
-$Definition['EmailWelcome'] = 'Hello %1$s,
+$Definition['EmailWelcome'] = '您好 %1$s,
 
 	%2$s 在 %3$s 为你注册了账号. 你的登录信息如下:
 
@@ -309,7 +309,7 @@ $Definition['GenderSuffix.Third.m'] = '';
 $Definition['Generate'] = '生成';
 $Definition['Generate Password'] = '生成密码';
 $Definition['Go'] = 'Go';
-$Definition['Google Sign In Settings'] = 'Google Sign In Settings';
+$Definition['Google Sign In Settings'] = 'Google 登陆设置';
 $Definition['Guest'] = '访客';
 $Definition['GuestModule.Message'] = '点下面的按钮可以加入我们!';
 $Definition['Howdy, Stranger!'] = '你好, 新朋友!';
