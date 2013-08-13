@@ -31,6 +31,7 @@ $Construct
    ->Column('Sort', 'int', TRUE)
    ->Column('Deletable', 'tinyint(1)', '1')
    ->Column('CanSession', 'tinyint(1)', '1')
+   ->Column('PersonalInfo', 'tinyint(1)', '0')
    ->Set($Explicit, $Drop);
 
 if (!$RoleTableExists || $Drop) {
@@ -559,6 +560,8 @@ $Construct->Table('Message')
    ->Column('Application', 'varchar(255)', TRUE)
    ->Column('Controller', 'varchar(255)', TRUE)
    ->Column('Method', 'varchar(255)', TRUE)
+   ->Column('CategoryID', 'int', TRUE)
+   ->Column('IncludeSubcategories', 'tinyint', '0')
    ->Column('AssetTarget', 'varchar(20)', TRUE)
 	->Column('CssClass', 'varchar(20)', TRUE)
    ->Column('Sort', 'int', TRUE)
