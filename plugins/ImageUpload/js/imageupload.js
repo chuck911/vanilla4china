@@ -25,30 +25,36 @@ $(function(){
 	});
 
 	uploader.bind('FileUploaded',function(uploader,file,response){
-		var url = response.response;
+		var data = $.parseJSON(response.response);
+		var url = data.url;
+		var filename = data.name.substr(0, data.name.lastIndexOf('.'));
 		$('#Form_Body').focus();
 		var inputFormat = getInputFormat();
 		var imageCode;
 		switch(inputFormat) {
 			case 'Html':
-				imageCode = '<img src="'+url+'"/>\r\n';
+				imageCode = '<img src="'+url+'" alt="'+filename+'" title="'+filename+'"/>\r\n';
 				break;
 			case 'BBCode':
-				imageCode = '[img]'+url+'[/img]\r\n';
+				imageCode = '[img alt="'+filename+'" title="'+filename+'"]'+url+'[/img]\r\n';
 				break;
 			case 'Markdown':
-				imageCode = '![]('+url+')\r\n';
+				imageCode = '!['+filename+']('+url+' "'+filename+'")\r\n';
 				break;
 			default:
 				imageCode = url+'\r\n';
 				break;
 		}
-		$('#Form_Body').val($('#Form_Body').val() + imageCode);
 		var editor = $('#Form_Body').get(0).editor;
-        if (editor) {
-            // Update the frame to match the contents of textarea
-            editor.updateFrame();
-        }
+		if (editor) {
+			// Update the frame to match the contents of textarea
+			editor.updateFrame();
+		}else if($('#Form_Body').data('wysihtml5')) { //check Wysihtml5
+			var wysihtml5 = $('#Form_Body').data('wysihtml5').editor;
+			wysihtml5.setValue(wysihtml5.getValue() + imageCode);
+		}else {
+			$('#Form_Body').val($('#Form_Body').val() + imageCode);
+		}
 	});
 
 	uploader.bind('UploadComplete',function(uploader,files){
