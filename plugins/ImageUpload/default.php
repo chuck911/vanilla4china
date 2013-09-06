@@ -2,8 +2,8 @@
 
 $PluginInfo['ImageUpload'] = array(
 	'Name' => 'ImageUpload',
-	'Description' => 'Easy image uploader',
-	'Version' => '1.0',
+	'Description' => 'lightweight and simple image uploader',
+	'Version' => '1.1',
 	'RequiredApplications' => array('Vanilla' => '2.0.18.4'),
 	'RequiredTheme' => FALSE,
 	'RequiredPlugins' => FALSE,
@@ -48,7 +48,7 @@ class ImageUploadPlugin extends Gdn_Plugin {
 	        $TargetImage = $UploadImage->GenerateTargetName(PATH_UPLOADS.'/imageupload', '', TRUE);
 
 	        $Props = $UploadImage->SaveImageAs($TmpImage,$TargetImage,C('Plugins.UploadImage.MaxHeight',''),C('Plugins.UploadImage.MaxWidth',650));
-	        echo $Props['Url'];
+	        echo json_encode(array('url'=>$Props['Url'],'name'=>$UploadImage->GetUploadedFileName()));
 		} catch (Exception $e) {
 			header('HTTP/1.0 400', TRUE, 400);
 			echo $e;
