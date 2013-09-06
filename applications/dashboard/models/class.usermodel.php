@@ -2260,7 +2260,7 @@ class UserModel extends Gdn_Model {
       // Set some required dates.
       $Now = Gdn_Format::ToDateTime();
       $Fields[$this->DateInserted] = $Now;
-      $Fields['DateFirstVisit'] = $Now;
+      TouchValue('DateFirstVisit', $Fields, $Now);
       $Fields['DateLastActive'] = $Now;
       $Fields['InsertIPAddress'] = Gdn::Request()->IpAddress();
       $Fields['LastIPAddress'] = Gdn::Request()->IpAddress();
@@ -2765,13 +2765,13 @@ class UserModel extends Gdn_Model {
          ->FirstRow();
 
       // If CountInvitations is null (ie. never been set before) or it is a new month since the DateSetInvitations
-      if ($User->CountInvitations == '' || is_null($User->DateSetInvitations) || Gdn_Format::Date($User->DateSetInvitations, 'n Y') != Gdn_Format::Date('', 'n Y')) {
+      if ($User->CountInvitations == '' || is_null($User->DateSetInvitations) || Gdn_Format::Date($User->DateSetInvitations, '%m %Y') != Gdn_Format::Date('', '%m %Y')) {
          // Reset CountInvitations and DateSetInvitations
          $this->SQL->Put(
             $this->Name,
             array(
                'CountInvitations' => $InviteCount,
-               'DateSetInvitations' => Gdn_Format::Date('', 'Y-m-01') // The first day of this month
+               'DateSetInvitations' => Gdn_Format::Date('', '%Y-%m-01') // The first day of this month
             ),
             array('UserID' => $UserID)
          );
