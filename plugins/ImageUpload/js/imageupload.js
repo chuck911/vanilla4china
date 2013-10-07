@@ -4,7 +4,7 @@ $(function(){
 		runtimes : 'html5,html4',
 		browse_button : 'btn_imageupload',
 		multi_selection:gdn.definition('ImageUpload_Multi'),
-		max_file_size : '2mb',
+		max_file_size : gdn.definition('ImageUpload_MaxFileSize'),
 		file_data_name: 'image_file',
 		url : gdn.definition('ImageUpload_Url', '/post/imageupload'),
 		// flash_swf_url : '/plugins/ImageUpload/js/plupload.flash.swf',
@@ -45,15 +45,14 @@ $(function(){
 				imageCode = url+'\r\n';
 				break;
 		}
-		var editor = $('#Form_Body').get(0).editor;
-		if (editor) {
-			// Update the frame to match the contents of textarea
-			editor.updateFrame();
-		}else if($('#Form_Body').data('wysihtml5')) { //check Wysihtml5
+		
+		if($('#Form_Body').data('wysihtml5')) { //check Wysihtml5
 			var wysihtml5 = $('#Form_Body').data('wysihtml5').editor;
 			wysihtml5.setValue(wysihtml5.getValue() + imageCode);
 		}else {
 			$('#Form_Body').val($('#Form_Body').val() + imageCode);
+			var editor = $('#Form_Body').get(0).editor;
+			if(editor) editor.updateFrame();
 		}
 	});
 
@@ -62,13 +61,12 @@ $(function(){
 	});
 
 	function getInputFormat() {
-		var editor = $('#Form_Body').get(0).editor;
+		var editor = $('#Form_Body').get(0).editor || $('#Form_Body').data('wysihtml5');
 		if(editor) return 'Html';
 		var format = $('#Form_Body').attr('format');
 		if (!format) format = gdn.definition('ImageUpload_InputFormatter', 'Html');
 		if (!format) format = gdn.definition('InputFormat', 'Html');
-		if (format == 'Raw' || format == 'Wysiwyg')
-		format = 'Html';
-        return format;
+		if (format == 'Raw' || format == 'Wysiwyg') format = 'Html';
+		return format;
 	}
 });

@@ -33,6 +33,7 @@ class ImageUploadPlugin extends Gdn_Plugin {
 		$Sender->AddDefinition('ImageUpload_Url',Url('/post/imageupload'));
 		$Sender->AddDefinition('ImageUpload_Multi',C('Plugins.UploadImage.Multi',TRUE));
 		$Sender->AddDefinition('ImageUpload_InputFormatter',C('Garden.InputFormatter', 'Html'));
+		$Sender->AddDefinition('ImageUpload_MaxFileSize', C('Plugins.UploadImage.MaxFileSize', '2mb'));
 		$Sender->AddCssFile('imageupload.css', 'plugins/ImageUpload/css');
 		$Sender->AddJsFile('plupload.full.js', 'plugins/ImageUpload');
 		$Sender->AddJsFile('imageupload.js', 'plugins/ImageUpload');
@@ -43,12 +44,12 @@ class ImageUploadPlugin extends Gdn_Plugin {
 		try {
 			$UploadImage = new Gdn_UploadImage();
 			$TmpImage = $UploadImage->ValidateUpload('image_file');
-	            
-	        // Generate the target image name.
-	        $TargetImage = $UploadImage->GenerateTargetName(PATH_UPLOADS.'/imageupload', '', TRUE);
 
-	        $Props = $UploadImage->SaveImageAs($TmpImage,$TargetImage,C('Plugins.UploadImage.MaxHeight',''),C('Plugins.UploadImage.MaxWidth',650));
-	        echo json_encode(array('url'=>$Props['Url'],'name'=>$UploadImage->GetUploadedFileName()));
+			// Generate the target image name.
+			$TargetImage = $UploadImage->GenerateTargetName(PATH_UPLOADS.'/imageupload', '', TRUE);
+
+			$Props = $UploadImage->SaveImageAs($TmpImage,$TargetImage,C('Plugins.UploadImage.MaxHeight',''),C('Plugins.UploadImage.MaxWidth',650));
+			echo json_encode(array('url'=>$Props['Url'],'name'=>$UploadImage->GetUploadedFileName()));
 		} catch (Exception $e) {
 			header('HTTP/1.0 400', TRUE, 400);
 			echo $e;
