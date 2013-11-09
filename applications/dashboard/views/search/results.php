@@ -1,9 +1,12 @@
 <?php if (!defined('APPLICATION')) exit(); ?>
 
+<?php if (!count($this->Data('SearchResults')) && $this->Data('SearchTerm'))
+   echo '<p class="NoResults">', sprintf(T('No results for %s.', 'No results for <b>%s</b>.'), htmlspecialchars($this->Data('SearchTerm'))), '</p>';
+?>
 <ol id="search-results" class="DataList DataList-Search" start="<?php echo $this->Data('From'); ?>">
    <?php foreach ($this->Data('SearchResults') as $Row): ?>
    <li class="Item Item-Search">
-      <h3><?php echo Anchor($Row['Title'], $Row['Url']); ?></h3>
+      <h3><?php echo Anchor(htmlspecialchars($Row['Title']), $Row['Url']); ?></h3>
       <div class="Item-Body Media">
          <?php
          $Photo = UserPhoto($Row, array('LinkClass' => 'Img'));
