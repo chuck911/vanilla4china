@@ -66,10 +66,14 @@ function WriteActivity($Activity, &$Sender, &$Session) {
       <?php echo WrapIf($Excerpt, 'div', array('class' => 'Excerpt')); ?>
       <?php 
       $Sender->EventArguments['Activity'] = $Activity;
-      $Sender->FireAs('ActivityController')->FireEvent('AfterActivityBody'); 
+      $Sender->FireAs('ActivityController')->FireEvent('AfterActivityBody');
+
+      // Reactions stub
+      if (in_array(GetValue('ActivityType', $Activity), array('Status', 'WallPost')))
+         WriteReactions($Activity);
       ?>
       <div class="Meta">
-         <span class="MItem DateCreated"><?php echo Gdn_Format::Date($Activity->DateUpdated); ?></span>
+         <span class="MItem DateCreated"><?php echo Gdn_Format::Date($Activity->DateInserted); ?></span>
          <?php
          $SharedString = FALSE;
          $ID = GetValue('SharedNotifyUserID', $Activity->Data);
