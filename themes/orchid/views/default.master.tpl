@@ -27,7 +27,7 @@
       <div class="Column PanelColumn" id="Panel">
          {module name="MeModule"}
          {asset name="Panel"}
-         <div class="Box"><a href=" https://www.digitalocean.com/?refcode=7c6cabf0414a" title="本站部署于DigitalOcean" target="_blank"><img alt="本站部署于DigitalOcean" src="http://square.b0.upaiyun.com/2013/11/23/d522d95a975b49c8.png"/></a></div>
+         <div class="Box"><a href=" https://www.digitalocean.com/?refcode=7c6cabf0414a" title="本站部署于DigitalOcean" target="_blank"><img alt="本站部署于DigitalOcean" src="http://square.b0.upaiyun.com//2013/11/23/c831dd38c0304e5d.png"/></a></div>
       </div>
       <div class="Column ContentColumn" id="Content">{asset name="Content"}</div>
     </div>
