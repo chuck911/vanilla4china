@@ -56,6 +56,6 @@ class NoiselessPlugin extends Gdn_Plugin {
 
 	public static function checkVersion($Version)
 	{
-		return strpos(APPLICATION_VERSION, $Version)===0;
+		return APPLICATION_VERSION >= $Version;
 	}
 }
