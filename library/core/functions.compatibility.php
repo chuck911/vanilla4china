@@ -2,11 +2,11 @@
 
 /**
  * General functions Interim Compatibility Map
- * 
+ *
  * These functions are copies of existing functions but with new and improved
  * names. Parent functions will be deprecated in a future release.
  *
- * @author Todd Burry <todd@vanillaforums.com> 
+ * @author Todd Burry <todd@vanillaforums.com>
  * @author Tim Gunter <tim@vanillaforums.com>
  * @copyright 2003 Vanilla Forums, Inc
  * @license http://www.opensource.org/licenses/gpl-2.0.php GPL
@@ -14,19 +14,30 @@
  * @since 2.2
  */
 
+if (!function_exists('is_id')) {
+   /**
+    * Finds whether the type given variable is a database id.
+    * @param mixed $val The variable being evaluated.
+    * @return bool Returns true if the variable is a database id or false if it isn't.
+    */
+   function is_id($val) {
+      return is_numeric($val);
+   }
+}
+
 if (!function_exists('paths')) {
    /**
     * Concatenate path elements into single string
-    * 
-    * Takes a variable number of arguments and concatenates them. Delimiters will 
-    * not be duplicated. Example: all of the following invocations will generate 
+    *
+    * Takes a variable number of arguments and concatenates them. Delimiters will
+    * not be duplicated. Example: all of the following invocations will generate
     * the path "/path/to/vanilla/applications/dashboard"
-    * 
+    *
     * '/path/to/vanilla', 'applications/dashboard'
     * '/path/to/vanilla/', '/applications/dashboard'
     * '/path', 'to', 'vanilla', 'applications', 'dashboard'
     * '/path/', '/to/', '/vanilla/', '/applications/', '/dashboard'
-    * 
+    *
     * @param function arguments
     * @return the concatentated path.
     */
@@ -94,10 +105,10 @@ if (!function_exists('valr')) {
 if (!function_exists('svalr')) {
    /**
     * Set a key to a value in a collection
-    * 
+    *
     * Works with single keys or "dot" notation. If $key is an array, a simple
     * shallow array_merge is performed.
-    * 
+    *
     * @param string $key The key or property name of the value.
     * @param array $collection The array or object to search.
     * @param type $value The value to set
@@ -129,5 +140,81 @@ if (!function_exists('svalr')) {
       } else {
          return $collection[$key] = $value;
       }
+   }
+}
+
+if (!function_exists('requestContext')) {
+   /**
+    * Get request context
+    *
+    * This method determines if current request is operating within HTTP, or
+    * elsewhere such as the command line.
+    *
+    * @staticvar string $context
+    * @return string
+    */
+   function requestContext() {
+      static $context;
+      if (is_null($context)) {
+         $context = C('Garden.RequestContext', null);
+         if (is_null($context)) {
+            $protocol = val('SERVER_PROTOCOL', $_SERVER);
+            if (preg_match('`^HTTP/`', $protocol))
+               $context = 'http';
+            else
+               $context = $protocol;
+         }
+         if (is_null($context))
+            $context = 'unknown';
+      }
+      return $context;
+   }
+}
+
+if (!function_exists('safeHeader')) {
+   /**
+    * Context-aware call to header()
+    *
+    * This method is context-aware and will avoid sending headers if the request
+    * context is not HTTP.
+    *
+    * @staticvar string $context
+    * @param type $header
+    * @param type $replace
+    * @param type $http_response_code
+    */
+   function safeHeader($header, $replace = true, $http_response_code = null) {
+      static $context;
+      if (is_null($context))
+         $context = requestContext();
+
+      if ($context == 'http')
+         header($header, $replace, $http_response_code);
+   }
+}
+
+if (!function_exists('safeCookie')) {
+   /**
+    * Context-aware call to setcookie()
+    *
+    * This method is context-aware and will avoid setting cookies if the request
+    * context is not HTTP.
+    *
+    * @staticvar string $context
+    * @param string $name
+    * @param string $value
+    * @param integer $expire
+    * @param string $path
+    * @param string $domain
+    * @param boolean $secure
+    * @param boolean $httponly
+    */
+   function safeCookie($name, $value = null, $expire = 0, $path = null, $domain = null, $secure = false, $httponly = false) {
+      static $context;
+      if (is_null($context))
+         $context = requestContext();
+
+      if ($context == 'http')
+         setcookie ($name, $value, $expire, $path, $domain, $secure, $httponly);
    }
 }
