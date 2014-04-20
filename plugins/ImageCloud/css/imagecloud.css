@@ -1,0 +1,15 @@
+#btn_imagecloud {
+	background: none;
+	border: 1px solid transparent;
+	color: #fff;
+	cursor: pointer;
+}
+
+.ImageUploadWrapper {
+	float: left;
+}
+
+.icon_imagecloud {
+	vertical-align: text-top;
+	margin-top: 2px;
+}
