@@ -1,5 +1,4 @@
 $(function(){
-console.log($.parseJSON(gdn.definition('ImageCloud_Tokens')));
 	var urlRoot = gdn.definition('ImageCloud_UrlRoot');
 	var suffix = gdn.definition('ImageCloud_Suffix');
 	var uploader = new plupload.Uploader({
@@ -10,15 +9,12 @@ console.log($.parseJSON(gdn.definition('ImageCloud_Tokens')));
 		file_data_name: 'file',
 		url : gdn.definition('ImageCloud_UploadUrl'),
 		multipart_params : $.parseJSON(gdn.definition('ImageCloud_Tokens')),
-		// flash_swf_url : '/plugins/ImageUpload/js/plupload.flash.swf',
 		filters : [
 			{title : "Image files", extensions : "jpg,gif,png"}
 		]
 	});
 
-	uploader.bind('Init', function(up, params) {
-		//console.log("Current runtime: " + params.runtime );
-	});
+	uploader.bind('Init', function(up, params) {});
 
 	uploader.init();
 
@@ -28,8 +24,6 @@ console.log($.parseJSON(gdn.definition('ImageCloud_Tokens')));
 	});
 
 	uploader.bind('FileUploaded',function(uploader,file,response){
-		// console.log(uploader,file,response);
-		// return;
 		var data = $.parseJSON(response.response);
 		var url = urlRoot + data.key + suffix;
 		var filename = file.name.substr(0, file.name.lastIndexOf('.'));
