@@ -14,7 +14,7 @@ $(function(){
 	});
 
 	uploader.bind('Init', function(up, params) {
-		console.log("Current runtime: " + params.runtime );
+		//console.log("Current runtime: " + params.runtime );
 	});
 
 	uploader.init();
