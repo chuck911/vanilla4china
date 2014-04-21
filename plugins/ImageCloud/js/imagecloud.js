@@ -1,33 +1,32 @@
 $(function(){
-
+	var urlRoot = gdn.definition('ImageCloud_UrlRoot');
+	var suffix = gdn.definition('ImageCloud_Suffix');
 	var uploader = new plupload.Uploader({
 		runtimes : 'html5,html4',
-		browse_button : 'btn_imageupload',
-		multi_selection:gdn.definition('ImageUpload_Multi'),
-		max_file_size : gdn.definition('ImageUpload_MaxFileSize'),
-		file_data_name: 'image_file',
-		url : gdn.definition('ImageUpload_Url', '/post/imageupload'),
-		// flash_swf_url : '/plugins/ImageUpload/js/plupload.flash.swf',
+		browse_button : 'btn_imagecloud',
+		multi_selection:gdn.definition('ImageCloud_Multi'),
+		max_file_size : gdn.definition('ImageCloud_MaxFileSize'),
+		file_data_name: 'file',
+		url : gdn.definition('ImageCloud_UploadUrl'),
+		multipart_params : $.parseJSON(gdn.definition('ImageCloud_Tokens')),
 		filters : [
 			{title : "Image files", extensions : "jpg,gif,png"}
 		]
 	});
 
-	uploader.bind('Init', function(up, params) {
-		//console.log("Current runtime: " + params.runtime );
-	});
+	uploader.bind('Init', function(up, params) {});
 
 	uploader.init();
 
 	uploader.bind('FilesAdded', function(uploader, files) {
 		uploader.start();
-		$('#imageupload_loading').show();
+		$('#imagecloud_loading').show();
 	});
 
 	uploader.bind('FileUploaded',function(uploader,file,response){
 		var data = $.parseJSON(response.response);
-		var url = data.url;
-		var filename = data.name.substr(0, data.name.lastIndexOf('.'));
+		var url = urlRoot + data.key + suffix;
+		var filename = file.name.substr(0, file.name.lastIndexOf('.'));
 		$('#Form_Body').focus();
 		var inputFormat = getInputFormat();
 		var imageCode;
@@ -57,7 +56,7 @@ $(function(){
 	});
 
 	uploader.bind('UploadComplete',function(uploader,files){
-		$('#imageupload_loading').hide();
+		$('#imagecloud_loading').hide();
 	});
 
 	function getInputFormat() {
