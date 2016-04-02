@@ -15,7 +15,7 @@ $Configuration['Database']['Password']                         = '';
 $Configuration['Database']['ConnectionOptions']                = array(
                                                                   12    => FALSE, //PDO::ATTR_PERSISTENT => FALSE,
                                                                   1000  => TRUE,  // PDO::MYSQL_ATTR_USE_BUFFERED_QUERY is missing in some php installations
-                                                                  1002  => "set names 'utf8'" // PDO::MYSQL_ATTR_INIT_COMMAND is missing in PHP 5.3, so I use the actual value "1002" instead
+                                                                  1002  => "set names 'utf8'; set time_zone = '+0:0';" // PDO::MYSQL_ATTR_INIT_COMMAND is missing in PHP 5.3, so I use the actual value "1002" instead
                                                                );
 $Configuration['Database']['CharacterEncoding']                = 'utf8';
 $Configuration['Database']['DatabasePrefix']                    = 'GDN_';
@@ -29,7 +29,7 @@ $Configuration['Garden']['ContentType']                         = 'text/html';
 $Configuration['Garden']['Charset']                             = 'utf-8';
 // An array of folders the application should never search through when searching for classes. (note: plugins had to be removed so that locale searches could get the locale folder from the plugin's folder).
 $Configuration['Garden']['FolderBlacklist']                     = array('.', '..', '_svn', '.git');
-$Configuration['Garden']['Locale']                              = 'en-CA';
+$Configuration['Garden']['Locale']                              = 'en';
 $Configuration['Garden']['LocaleCodeset']                       = 'UTF8';
 $Configuration['Garden']['Title']                               = 'Vanilla 2';
 $Configuration['Garden']['Domain']                              = '';
@@ -58,11 +58,12 @@ $Configuration['Garden']['UserAccount']['AllowEdit']            = TRUE; // Allow
 $Configuration['Garden']['Registration']['Method']              = 'Basic'; // Options are: Basic, Captcha, Approval, Invitation
 $Configuration['Garden']['Registration']['DefaultRoles']        = array('8'); // The default role(s) to assign new users (4 is "Member")
 $Configuration['Garden']['Registration']['ApplicantRoleID']     = 4; // The "Applicant" RoleID.
-$Configuration['Garden']['Registration']['InviteExpiration']    = '-1 week'; // The time before now that an invitation expires. ie. If an invitation was sent within the last week, it is still valid. This value will be plugged directly into strtotime()
+$Configuration['Garden']['Registration']['InviteExpiration']    = '1 week'; // When invitations expire. This will be plugged into strtotime().
 $Configuration['Garden']['Registration']['InviteRoles']         = 'FALSE';
 $Configuration['Garden']['Registration']['ConfirmEmail']        = FALSE;
 $Configuration['Garden']['Registration']['ConfirmEmailRole']    = 3;
 $Configuration['Garden']['Registration']['MinPasswordLength']   = 6;
+$Configuration['Garden']['Registration']['NameUnique']          = true;
 $Configuration['Garden']['TermsOfService']                      = '/home/termsofservice'; // The url to the terms of service.
 $Configuration['Garden']['Email']['UseSmtp']                    = FALSE;
 $Configuration['Garden']['Email']['SmtpHost']                   = '';
@@ -79,7 +80,7 @@ $Configuration['Garden']['CanProcessImages']                    = FALSE;
 $Configuration['Garden']['Installed']                           = FALSE; // Has Garden been installed yet?
 $Configuration['Garden']['Forms']['HoneypotName']               = 'hpt';
 $Configuration['Garden']['Upload']['MaxFileSize']               = '50M';
-$Configuration['Garden']['Upload']['AllowedFileExtensions']     = array('txt','jpg','jpeg','gif','png', 'bmp', 'tiff', 'ico', 'zip','gz','tar.gz','tgz','psd','ai','fla','swf','pdf','doc','xls','ppt','docx','xlsx','log','rar','7z');
+$Configuration['Garden']['Upload']['AllowedFileExtensions']     = array('txt','jpg','jpeg','gif','png', 'bmp', 'tiff', 'ico', 'zip','gz','tar.gz','tgz','psd','ai','fla','pdf','doc','xls','ppt','docx','xlsx','log','rar','7z');
 $Configuration['Garden']['Picture']['MaxHeight']                = 1000;
 $Configuration['Garden']['Picture']['MaxWidth']                 = 600;
 $Configuration['Garden']['Profile']['MaxHeight']                = 1000;
@@ -89,7 +90,7 @@ $Configuration['Garden']['Profile']['MaxWidth']                 = 250;
 $Configuration['Garden']['Thumbnail']['Size']                   = 40;
 $Configuration['Garden']['Menu']['Sort']                        = array('Dashboard', 'Discussions', 'Questions', 'Activity', 'Applicants', 'Conversations', 'User');
 //$Configuration['Garden']['DashboardMenu']['Sort']               = array('Dashboard', 'Appearance', 'Banner', 'Themes', 'Theme Options', 'Custom Theme', 'Messages', 'Custom Domain', 'Users', 'Roles & Permissions', 'Registration', 'Applicants', 'Authentication', 'Forum', 'Forum Settings', 'Categories', 'Tagging', 'Voting', 'Spam', 'Flagging', 'Flagged Content', 'Media', 'Signatures', 'Add-ons', 'Addons', 'Plugins', 'Applications', '&lt;Embed&t; Vanilla', 'Locales', 'Site Settings', 'Import');
-$Configuration['Garden']['InputFormatter']                      = 'Html'; // Html, BBCode, Markdown, Text
+$Configuration['Garden']['InputFormatter']                      = 'Markdown'; // Html, BBCode, Markdown, Text
 $Configuration['Garden']['Html']['SafeStyles']                  = TRUE; // disallow style/class attributes in html to prevent click jacking
 $Configuration['Garden']['Html']['AllowedElements']             = "a, abbr, acronym, address, area, audio, b, bdi, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, details, dfn, div, dl, dt, em, figure, figcaption, font, h1, h2, h3, h4, h5, h6, hgroup, hr, i, img, ins, kbd, li, map, mark, menu, meter, ol, p, pre, q, s, samp, small, span, strike, strong, sub, sup, summary, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video, wbr";
 $Configuration['Garden']['Search']['Mode']                      = 'like'; // matchboolean, match, boolean, like
@@ -110,6 +111,7 @@ $Configuration['Garden']['Modules']['ShowRecentUserModule']     = FALSE;
 $Configuration['Garden']['Embed']['CommentsPerPage']            = 50;
 $Configuration['Garden']['Embed']['SortComments']               = 'desc';
 $Configuration['Garden']['Embed']['PageToForum']                = TRUE;
+$Configuration['Garden']['BannedPhoto']                         = 'https://cd8ba0b44a15c10065fd-24461f391e20b7336331d5789078af53.ssl.cf1.rackcdn.com/images/banned_large.png';
 
 
 // Formatting
@@ -147,7 +149,7 @@ $Configuration['Modules']['Conversations']['Content'] = array('MessageModule', '
 $Configuration['Routes']['DefaultController'] = 'discussions';
 $Configuration['Routes']['DefaultForumRoot'] = 'discussions';
 $Configuration['Routes']['Default404'] = array('dashboard/home/filenotfound', 'NotFound');
-$Configuration['Routes']['DefaultPermission'] = array('dashboard/home/permission', 'NotAuthorized');
+$Configuration['Routes']['DefaultPermission'] = array('dashboard/home/unauthorized', 'NotAuthorized');
 $Configuration['Routes']['UpdateMode'] = 'dashboard/home/updatemode';
 
 //Chinese Username Validations

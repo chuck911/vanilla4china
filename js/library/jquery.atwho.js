@@ -448,6 +448,8 @@
         var _ref;
         switch (e.keyCode) {
           case KEY_CODE.ESC:
+          case KEY_CODE.TAB:
+          case KEY_CODE.ENTER:
             e.preventDefault();
             if ((_ref = this.controller()) != null) {
               _ref.view.hide();
@@ -486,8 +488,7 @@
             if (!view.visible()) {
               return;
             }
-            e.preventDefault();
-            view.choose();
+            view.choose(e);
             break;
           default:
             $.noop();
@@ -558,19 +559,31 @@
       };
 
       Controller.prototype.content = function() {
+        var result = {
+          content: null,
+          offset: 0
+        };
+
         if (this.$inputor.is('textarea, input')) {
-          return this.$inputor.val();
+          result.content = this.$inputor.val();
         } else {
-          return this.$inputor.text();
+          var textNode = $(document.createElement('div'));
+          var html = this.$inputor.html();
+          var breaks = /<br(\s+)?(\/)?>/;
+          result.offset = html.match(breaks) ? html.match(breaks).length : 0;
+          textNode.html(html.replace(breaks, " "));
+          result.content = textNode.text();
         }
+
+        return result;
       };
 
       Controller.prototype.catch_query = function() {
-        var caret_pos, content, end, query, start, subtext;
-        content = this.content();
+        var caret_pos, contents, end, query, start, subtext;
+        contents = this.content();
         ////caret_pos = this.$inputor.caret('pos');
-        caret_pos = this.$inputor.caret('pos', this.setting.cWindow);
-        subtext = content.slice(0, caret_pos);
+        caret_pos = this.$inputor.caret('pos', this.setting.cWindow) + contents.offset;
+        subtext = contents.content.slice(0, caret_pos);
         query = this.callbacks("matcher").call(this, this.at, subtext, this.get_opt('start_with_space'));
         if (typeof query === "string" && query.length <= this.get_opt('max_len', 20)) {
           start = caret_pos - query.length;
@@ -691,7 +704,8 @@
           range.setStart(range.endContainer, Math.max(pos, 0));
           range.setEnd(range.endContainer, range.endOffset);
           range.deleteContents();
-          range.insertNode($insert_node[0]);
+          range.insertNode(document.createTextNode(content + " "));
+          //range.insertNode($insert_node[0]);
           range.collapse(false);
 
           ////sel = window.getSelection();
@@ -820,7 +834,7 @@
           $menu.find('.cur').removeClass('cur');
           return $(e.currentTarget).addClass('cur');
         }).on('click', function(e) {
-          _this.choose();
+          _this.choose(e);
           return e.preventDefault();
         });
         return this.$el.on('mouseenter.atwho-view', 'ul', function(e) {
@@ -834,13 +848,15 @@
         return this.$el.is(":visible");
       };
 
-      View.prototype.choose = function() {
+      View.prototype.choose = function(event) {
         var $li, content;
-        $li = this.$el.find(".cur");
-        content = this.context.insert_content_for($li);
-        this.context.insert(this.context.callbacks("before_insert").call(this.context, content, $li), $li);
-        this.context.trigger("inserted", [$li]);
-        return this.hide();
+        if (($li = this.$el.find(".cur")).length) {
+          event.preventDefault();
+          content = this.context.insert_content_for($li);
+          this.context.insert(this.context.callbacks("before_insert").call(this.context, content, $li), $li);
+          this.context.trigger("inserted", [$li]);
+          return this.hide();
+        }
       };
 
       View.prototype.reposition = function(rect) {

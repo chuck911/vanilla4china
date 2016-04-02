@@ -1,0 +1,53 @@
+{
+	"name": "vanilla/vanilla",
+	"description": "Vanilla is a powerfully simple discussion forum you can easily customize to make as unique as your community.",
+	"type": "project",
+	"license": "GPLv2",
+	"authors": [
+		{
+			"name": "Todd Burry",
+			"email": "todd@vanillaforums.com"
+		},
+		{
+			"name": "Mark O'Sullivan",
+			"email": "mark@vanillaforums.com"
+		},
+		{
+			"name": "Tim Gunter",
+			"email": "tim@vanillaforums.com"
+		},
+		{
+			"name": "Lincoln Russell",
+			"email": "lincoln@vanillaforums.com"
+		}
+
+	],
+	"require": {
+		"vanilla/garden-http": "~1.0",
+		"vanilla/htmlawed": "~1.0",
+		"vanilla/nbbc": "~2.1"
+	},
+	"autoload": {
+		"classmap": [
+			"library/core/",
+			"library/database/",
+			"library/setup/",
+			"library/vendors/"
+		],
+		"files": [
+			"library/core/functions.error.php",
+			"library/core/functions.general.php",
+			"library/core/functions.compatibility.php",
+			"library/core/functions.deprecated.php"
+		]
+	},
+	"scripts": {
+		"pre-install-cmd": "Vanilla\\Setup\\ComposerHelper::preUpdate",
+		"pre-update-cmd": "Vanilla\\Setup\\ComposerHelper::preUpdate"
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"VanillaTests\\": "tests"
+		}
+	}
+}
