@@ -1,21 +1,35 @@
 <?php if (!defined('APPLICATION')) exit(); ?>
 <div class="Box InThisConversation">
-   <h4><?php echo T('In this Conversation'); ?></h4>
-   <ul class="PanelInfo">
-   <?php
-   $Result = $this->Data->Result();
-   foreach ($this->Data->Result() as $User) {
-      echo '<li>';
+    <?php echo panelHeading(t('In this Conversation')); ?>
+    <ul class="PanelInfo">
+        <?php foreach ($this->data('Participants') as $User): ?>
+            <li>
+                <?php
+                $Username = htmlspecialchars(val('Name', $User));
+                $Photo = val('Photo', $User);
 
-      if (GetValue('Deleted', $User))
-         echo Wrap(UserPhoto($User, array('ImageClass' => 'ProfilePhotoSmall')).' '.UserAnchor($User, 'UserLink'), 'del',
-            array('title' => sprintf(T('%s has left this conversation.'), htmlspecialchars(GetValue('Name', $User))))
-            );
-      else
-         echo UserPhoto($User, array('ImageClass' => 'ProfilePhotoSmall')).' '.UserAnchor($User, 'UserLink');
-
-      echo '</li>';
-   }
-   ?>
-   </ul>
+                if (val('Deleted', $User)) {
+                    echo anchor(
+                        wrap(
+                            ($Photo ? img($Photo, array('class' => 'ProfilePhoto ProfilePhotoSmall')) : '').' '.
+                            wrap($Username, 'del', array('class' => 'Username')),
+                            'span', array('class' => 'Conversation-User',)
+                        ),
+                        userUrl($User),
+                        array('title' => sprintf(t('%s has left this conversation.'), $Username))
+                    );
+                } else {
+                    echo anchor(
+                        wrap(
+                            ($Photo ? img($Photo, array('class' => 'ProfilePhoto ProfilePhotoSmall')) : '').' '.
+                            wrap($Username, 'span', array('class' => 'Username')),
+                            'span', array('class' => 'Conversation-User')
+                        ),
+                        userUrl($User)
+                    );
+                }
+                ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 </div>

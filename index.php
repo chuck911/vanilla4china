@@ -1,22 +1,21 @@
 <?php
-
 /**
- * Application Gateway
+ * Application Gateway.
  *
- * @author Mark O'Sullivan <mark@vanillaforums.com>
- * @author Todd Burry <todd@vanillaforums.com>
- * @author Tim Gunter <tim@vanillaforums.com>
- * @copyright 2003 Vanilla Forums, Inc
- * @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
- * @package Garden
+ * @copyright 2009-2016 Vanilla Forums Inc.
+ * @license http://www.opensource.org/licenses/gpl-2.0.php GNU GPL v2
+ * @package Core
  * @since 2.0
  */
 
+if (PHP_VERSION_ID < 50400) {
+    die("Vanilla requires PHP 5.4 or greater.");
+}
+
 define('APPLICATION', 'Vanilla');
-define('APPLICATION_VERSION', '2.2.10.3');
+define('APPLICATION_VERSION', '2.2.105');
 
 // Report and track all errors.
-
 error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 ini_set('display_errors', 0);
 ini_set('track_errors', 1);
@@ -34,13 +33,12 @@ require_once(PATH_ROOT.'/bootstrap.php');
 
 // Create and configure the dispatcher.
 
-$Dispatcher = Gdn::Dispatcher();
+$dispatcher = Gdn::dispatcher();
 
-$EnabledApplications = Gdn::ApplicationManager()->EnabledApplicationFolders();
-$Dispatcher->EnabledApplicationFolders($EnabledApplications);
-$Dispatcher->PassProperty('EnabledApplications', $EnabledApplications);
+$enabledApplications = Gdn::applicationManager()->enabledApplicationFolders();
+$dispatcher->enabledApplicationFolders($enabledApplications);
+$dispatcher->passProperty('EnabledApplications', $enabledApplications);
 
 // Process the request.
-
-$Dispatcher->Start();
-$Dispatcher->Dispatch();
+$dispatcher->start();
+$dispatcher->dispatch();
